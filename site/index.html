@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ML 시계열 기초</title>
+<meta name="description" content="시계열 추정 · 레짐 · 베이지안 · 위험중립 가치평가 · 전략 검증 설명자료 7편">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F7F9;--panel:#FFFFFF;--ink:#14213D;--sub:#5B6475;--line:#E2E6EC;--accent:#1F4E8C;--accent-ink:#FFFFFF;--chip:#EEF2F8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E131B;--panel:#161D28;--ink:#E8EDF5;--sub:#9AA6B8;--line:#26303F;--accent:#6EA1E6;--accent-ink:#0E131B;--chip:#1E2836}}
+:root[data-theme="dark"]{--bg:#0E131B;--panel:#161D28;--ink:#E8EDF5;--sub:#9AA6B8;--line:#26303F;--accent:#6EA1E6;--accent-ink:#0E131B;--chip:#1E2836}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header{padding:44px 0 20px}
+.kick{font-size:13px;letter-spacing:.06em;color:var(--sub);font-weight:500}
+h1{font-size:clamp(26px,4.4vw,38px);margin:6px 0 8px;line-height:1.25}
+.intro{color:var(--sub);max-width:760px;margin:0}
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin:22px 0 4px}
+.stats b{display:block;font-size:26px;color:var(--accent)}.stats span{font-size:13px;color:var(--sub)}
+.note{margin:18px 0 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--chip);border-radius:6px;font-size:14px}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 16px}
+nav a{flex:none;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:500}
+nav a:hover{border-color:var(--accent);color:var(--accent)}
+main .wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;padding:22px 16px 48px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;scroll-margin-top:64px;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:10px}
+.top h2{font-size:19px;margin:0}
+.badge{flex:none;min-width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-weight:700;background:var(--accent);color:var(--accent-ink);font-size:15px;padding:0 6px}
+.badge.bX{font-size:13px}
+.lead{color:var(--sub);font-size:14px;margin:8px 0 10px}
+dl{margin:0 0 12px;display:grid;gap:4px}dl div{display:flex;gap:8px;font-size:14px}dt{flex:none;width:82px;color:var(--sub)}dd{margin:0}
+.files{list-style:none;margin:auto 0 0;padding:0;border-top:1px solid var(--line)}
+.files li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:10px 0 0}
+.k{font-weight:500;font-size:14px}.m{color:var(--sub);font-size:13px}.a{margin-left:auto;display:flex;gap:6px}
+.btn{text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;background:var(--accent);color:var(--accent-ink);font-weight:500}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+footer{border-top:1px solid var(--line);color:var(--sub);font-size:13px;padding:18px 0 36px}
+footer a{color:var(--accent)}
+</style></head><body>
+<header><div class="wrap">
+<div class="kick">ML · TIME SERIES BASICS</div>
+<h1>ML 시계열 기초</h1>
+<p class="intro">시계열 추정(Yule-Walker · HMM), 베이지안(켤레 사전분포 · 선거 예측), 위험중립 가치평가(몬테카를로 · LSM · 베이지안 확장), 전략 검증을 다루는 설명자료 모음. 주제마다 덱과 함께 강의노트 · 재현 코드 · 실습 노트북을 둔다.</p>
+<div class="stats"><div><b>7</b><span>주제</span></div><div><b>7</b><span>PDF</span></div><div><b>301</b><span>슬라이드</span></div><div><b>3</b><span>코드 · 노트북</span></div></div>
+<p class="note">수치 예제와 백테스트는 교육용이며 투자 권고가 아니다.</p>
+</div></header>
+<nav aria-label="주제"><div class="wrap"><a href="#t1">1 YuleWalker AR추정</a><a href="#t2">2 HMM 레짐투자</a><a href="#t3">3 켤레사전분포 금융응용</a><a href="#t4">4 베이지안 선거예측</a><a href="#t5">5 위험중립 MC LSM</a><a href="#t6">6 위험중립 베이지안확장</a><a href="#t7">7 식료품 그래프전략</a></div></nav>
+<main><div class="wrap">
+<article class="card" id="t1">
+  <div class="top"><span class="badge">1</span><h2>AR 모형의 계수 추정과 Yule-Walker</h2></div>
+  <p class="lead">OLS · Yule-Walker · Burg · MLE 네 가지 방법을 한눈에 — 자기상관에 맞춰 계수를 구한다</p>
+  <dl><div><dt>분야</dt><dd>시계열</dd></div><div><dt>다루는 것</dt><dd>자기상관 · 정상성 · Toeplitz 행렬 · 손계산 예제 · 방법 비교</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">36장 · 2.5 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/01_YuleWalker_AR%EC%B6%94%EC%A0%95/Yule_Walker_Method_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/01_YuleWalker_AR%EC%B6%94%EC%A0%95/Yule_Walker_Method_JJ.pdf" download>내려받기</a></span></li><li><span class="k">강의노트</span><span class="a"><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/tree/main/01_YuleWalker_AR%EC%B6%94%EC%A0%95/note/Yule_Walker_Method.md" target="_blank" rel="noopener">폴더 열기</a></span></li></ul>
+</article>
+<article class="card" id="t2">
+  <div class="top"><span class="badge">2</span><h2>은닉 마르코프 모형과 레짐 투자</h2></div>
+  <p class="lead">ritvikmath 영상 재현 · 10년 실데이터 검증 · 20년 워크포워드 · 2024–2026 연구</p>
+  <dl><div><dt>분야</dt><dd>시계열</dd></div><div><dt>다루는 것</dt><dd>전방·비터비·EM · 필터링 확률 · BIC · 점프모형 비교</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">50장 · 2.4 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/02_HMM_%EB%A0%88%EC%A7%90%ED%88%AC%EC%9E%90/HMM_Regime_Trading_Extended_JJ_Deck.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/02_HMM_%EB%A0%88%EC%A7%90%ED%88%AC%EC%9E%90/HMM_Regime_Trading_Extended_JJ_Deck.pdf" download>내려받기</a></span></li><li><span class="k">재현 코드</span><span class="a"><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/tree/main/02_HMM_%EB%A0%88%EC%A7%90%ED%88%AC%EC%9E%90/code" target="_blank" rel="noopener">폴더 열기</a></span></li></ul>
+</article>
+<article class="card" id="t3">
+  <div class="top"><span class="badge">3</span><h2>켤레 사전분포의 금융 응용</h2></div>
+  <p class="lead">승률 · 부도율 · 사고 건수 · 알파를 가상 관측치와 실제 관측치의 합으로 추정한다</p>
+  <dl><div><dt>분야</dt><dd>베이지안</dd></div><div><dt>다루는 것</dt><dd>Beta-Binomial · Gamma-Poisson · Normal-Normal · Dirichlet</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">29장 · 1.1 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/03_%EC%BC%A4%EB%A0%88%EC%82%AC%EC%A0%84%EB%B6%84%ED%8F%AC_%EA%B8%88%EC%9C%B5%EC%9D%91%EC%9A%A9/Conjugate_Prior_Finance_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/03_%EC%BC%A4%EB%A0%88%EC%82%AC%EC%A0%84%EB%B6%84%ED%8F%AC_%EA%B8%88%EC%9C%B5%EC%9D%91%EC%9A%A9/Conjugate_Prior_Finance_JJ.pdf" download>내려받기</a></span></li></ul>
+</article>
+<article class="card" id="t4">
+  <div class="top"><span class="badge">4</span><h2>선거 예측의 베이지안 확장</h2></div>
+  <p class="lead">2024 대선에서 드러난 한계를 다섯 가지 베이지안 도구로 고친다</p>
+  <dl><div><dt>분야</dt><dd>베이지안</dd></div><div><dt>다루는 것</dt><dd>사전분포 교정 · 상태공간(칼만) · 하우스 효과 · 요인 상관 구조</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">29장 · 1.2 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/04_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88_%EC%84%A0%EA%B1%B0%EC%98%88%EC%B8%A1/Bayesian_Election_Forecast_Extensions_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/04_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88_%EC%84%A0%EA%B1%B0%EC%98%88%EC%B8%A1/Bayesian_Election_Forecast_Extensions_JJ.pdf" download>내려받기</a></span></li></ul>
+</article>
+<article class="card" id="t5">
+  <div class="top"><span class="badge">5</span><h2>위험중립 가치평가와 수치해법</h2></div>
+  <p class="lead">마팅게일 · 몬테카를로 · LSM — Hull 13·15·21·27·28·30장 재구성</p>
+  <dl><div><dt>분야</dt><dd>가치평가</dd></div><div><dt>다루는 것</dt><dd>이론 → 손계산 → Python 실습 · 미국형 옵션 LSM</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">77장 · 3.4 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/05_%EC%9C%84%ED%97%98%EC%A4%91%EB%A6%BD_MC_LSM/RiskNeutral_MC_LSM_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/05_%EC%9C%84%ED%97%98%EC%A4%91%EB%A6%BD_MC_LSM/RiskNeutral_MC_LSM_JJ.pdf" download>내려받기</a></span></li></ul>
+</article>
+<article class="card" id="t6">
+  <div class="top"><span class="badge">6</span><h2>위험중립 가치평가의 베이지안 확장</h2></div>
+  <p class="lead">측도 변경은 재가중, 마팅게일은 학습, 모수 불확실성은 가격의 분포다</p>
+  <dl><div><dt>분야</dt><dd>가치평가</dd></div><div><dt>다루는 것</dt><dd>모수 불확실성 · 사후 예측 가격 분포</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">50장 · 2.6 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/06_%EC%9C%84%ED%97%98%EC%A4%91%EB%A6%BD_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88%ED%99%95%EC%9E%A5/Bayesian_RiskNeutral_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/06_%EC%9C%84%ED%97%98%EC%A4%91%EB%A6%BD_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88%ED%99%95%EC%9E%A5/Bayesian_RiskNeutral_JJ.pdf" download>내려받기</a></span></li><li><span class="k">실습 노트북</span><span class="a"><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/06_%EC%9C%84%ED%97%98%EC%A4%91%EB%A6%BD_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88%ED%99%95%EC%9E%A5/Lab_Bayesian_RiskNeutral.ipynb" target="_blank" rel="noopener">열기</a></span></li></ul>
+</article>
+<article class="card" id="t7">
+  <div class="top"><span class="badge">7</span><h2>식료품 그래프 전략 개선안</h2></div>
+  <p class="lead">예측을 더하기보다 잡음과 비용을 빼는 설계 — 2019~2026 데이터로 검증</p>
+  <dl><div><dt>분야</dt><dd>전략 검증</dd></div><div><dt>다루는 것</dt><dd>샤프 추정오차 · 계층 군집 · 역변동성 비중 · 비용 민감도</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">30장 · 1.7 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/Grocery_Strategy_Improved_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/Grocery_Strategy_Improved_JJ.pdf" download>내려받기</a></span></li><li><span class="k">코드</span><span class="a"><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/tree/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/code" target="_blank" rel="noopener">폴더 열기</a></span></li></ul>
+</article>
+</div></main>
+<footer><div class="wrap">저장소 <a href="https://github.com/keerhee/ml-timeseries-basics">keerhee/ml-timeseries-basics</a> · 자료 CC BY-NC-SA 4.0</div></footer>
+</body></html>

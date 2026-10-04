@@ -1,0 +1,7 @@
+# 원본 PPTX는 올리지 않는다 — 배포는 PDF로 한다.
+*.pptx
+*.ppt
+.DS_Store
+__pycache__/
+# 코드가 내려받는 데이터(yfinance)는 올리지 않는다.
+data/
