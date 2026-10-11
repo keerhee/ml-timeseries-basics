@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ML 시계열 기초</title>
-<meta name="description" content="시계열 추정 · 레짐 · 베이지안 · 위험중립 가치평가 · 전략 검증 설명자료 7편">
+<meta name="description" content="시계열 추정 · 레짐 · 베이지안 · 위험중립 가치평가 · 전략 검증 설명자료 8편">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -41,11 +41,11 @@ footer a{color:var(--accent)}
 <header><div class="wrap">
 <div class="kick">ML · TIME SERIES BASICS</div>
 <h1>ML 시계열 기초</h1>
-<p class="intro">시계열 추정(Yule-Walker · HMM), 베이지안(켤레 사전분포 · 선거 예측), 위험중립 가치평가(몬테카를로 · LSM · 베이지안 확장), 전략 검증을 다루는 설명자료 모음. 주제마다 덱과 함께 강의노트 · 재현 코드 · 실습 노트북을 둔다.</p>
-<div class="stats"><div><b>7</b><span>주제</span></div><div><b>7</b><span>PDF</span></div><div><b>301</b><span>슬라이드</span></div><div><b>3</b><span>코드 · 노트북</span></div></div>
+<p class="intro">시계열 추정(Yule-Walker · HMM), 베이지안(켤레 사전분포 · 선거 예측 · 베이지안 시계열), 위험중립 가치평가(몬테카를로 · LSM · 베이지안 확장), 전략 검증을 다루는 설명자료 모음. 주제마다 덱과 함께 강의노트 · 재현 코드 · 실습 노트북을 둔다.</p>
+<div class="stats"><div><b>8</b><span>주제</span></div><div><b>8</b><span>PDF</span></div><div><b>349</b><span>슬라이드</span></div><div><b>3</b><span>코드 · 노트북</span></div></div>
 <p class="note">수치 예제와 백테스트는 교육용이며 투자 권고가 아니다.</p>
 </div></header>
-<nav aria-label="주제"><div class="wrap"><a href="#t1">1 YuleWalker AR추정</a><a href="#t2">2 HMM 레짐투자</a><a href="#t3">3 켤레사전분포 금융응용</a><a href="#t4">4 베이지안 선거예측</a><a href="#t5">5 위험중립 MC LSM</a><a href="#t6">6 위험중립 베이지안확장</a><a href="#t7">7 식료품 그래프전략</a></div></nav>
+<nav aria-label="주제"><div class="wrap"><a href="#t1">1 YuleWalker AR추정</a><a href="#t2">2 HMM 레짐투자</a><a href="#t3">3 켤레사전분포 금융응용</a><a href="#t4">4 베이지안 선거예측</a><a href="#t5">5 위험중립 MC LSM</a><a href="#t6">6 위험중립 베이지안확장</a><a href="#t7">7 식료품 그래프전략</a><a href="#t8">8 베이지안 시계열</a></div></nav>
 <main><div class="wrap">
 <article class="card" id="t1">
   <div class="top"><span class="badge">1</span><h2>AR 모형의 계수 추정과 Yule-Walker</h2></div>
@@ -88,6 +88,12 @@ footer a{color:var(--accent)}
   <p class="lead">예측을 더하기보다 잡음과 비용을 빼는 설계 — 2019~2026 데이터로 검증</p>
   <dl><div><dt>분야</dt><dd>전략 검증</dd></div><div><dt>다루는 것</dt><dd>샤프 추정오차 · 계층 군집 · 역변동성 비중 · 비용 민감도</dd></div></dl>
   <ul class="files"><li><span class="k">덱</span><span class="m">30장 · 1.7 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/Grocery_Strategy_Improved_JJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/Grocery_Strategy_Improved_JJ.pdf" download>내려받기</a></span></li><li><span class="k">코드</span><span class="a"><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/tree/main/07_%EC%8B%9D%EB%A3%8C%ED%92%88_%EA%B7%B8%EB%9E%98%ED%94%84%EC%A0%84%EB%9E%B5/code" target="_blank" rel="noopener">폴더 열기</a></span></li></ul>
+</article>
+<article class="card" id="t8">
+  <div class="top"><span class="badge">8</span><h2>베이지안 시계열 분석</h2></div>
+  <p class="lead">AR 모형에서 베이지안 예측까지 — 하나의 AR(2) 예제로 따라가는 5부 구성</p>
+  <dl><div><dt>분야</dt><dd>베이지안</dd></div><div><dt>다루는 것</dt><dd>AR 모형 · 최대우도 · 사후분포 · 모수 불확실성을 담은 예측구간</dd></div></dl>
+  <ul class="files"><li><span class="k">덱</span><span class="m">48장 · 5.8 MB</span><span class="a"><a class="btn" href="https://github.com/keerhee/ml-timeseries-basics/blob/main/08_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88%EC%8B%9C%EA%B3%84%EC%97%B4_%EC%9D%B4%EB%A1%A0%EA%B3%BC%EC%98%88%EC%A0%9C/Bayesian_Time_Series_Theory_Examples_BJ.pdf" target="_blank" rel="noopener">열람</a><a class="btn ghost" href="https://github.com/keerhee/ml-timeseries-basics/raw/main/08_%EB%B2%A0%EC%9D%B4%EC%A7%80%EC%95%88%EC%8B%9C%EA%B3%84%EC%97%B4_%EC%9D%B4%EB%A1%A0%EA%B3%BC%EC%98%88%EC%A0%9C/Bayesian_Time_Series_Theory_Examples_BJ.pdf" download>내려받기</a></span></li></ul>
 </article>
 </div></main>
 <footer><div class="wrap">저장소 <a href="https://github.com/keerhee/ml-timeseries-basics">keerhee/ml-timeseries-basics</a> · 자료 CC BY-NC-SA 4.0</div></footer>
